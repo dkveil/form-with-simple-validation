@@ -43,6 +43,7 @@ function App() {
         email: "",
         password: "",
         accept: false,
+        message: "",
     });
     const [error, setError] = React.useState({
         name: false,
@@ -52,11 +53,24 @@ function App() {
     });
 
     const messages = {
-        username_incorect: "the name must be at least 10 characters long and must not contain spaces",
+        username_incorect:
+            "the name must be at least 10 characters long and must not contain spaces",
         email_incorect: "missing @ in the mail",
         password_incorect: "the password must be at least 8 characters long",
         accept_incorect: "unconfirmed consent",
     };
+
+    React.useEffect(() => {
+        if (user.message !== "") {
+            setTimeout(() => (
+                setUser((prev) => ({
+                    ...prev,
+                    message: "",
+                }))
+            ), 3000
+            );
+        }
+    }, [user]);
 
     const handleChange = (e) => {
         if (e.target.type === "checkbox") {
@@ -72,8 +86,65 @@ function App() {
         }
     };
 
+    const formValidation = () => {
+        let name = false;
+        let email = false;
+        let password = false;
+        let accept = false;
+
+        let correct = false;
+
+        if (user.name.length > 10 && user.name.indexOf(" ") === -1) {
+            name = true;
+        }
+        if (user.email.indexOf("@") !== -1) {
+            email = true;
+        }
+        if (user.password.length >= 8) {
+            password = true;
+        }
+        if (user.accept) {
+            accept = true;
+        }
+        if (name && email && password && accept) {
+            correct = true;
+        }
+        return {
+            correct,
+            name,
+            email,
+            password,
+            accept,
+        };
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        const validation = formValidation();
+
+        if (validation.correct) {
+            setUser({
+                name: "",
+                email: "",
+                password: "",
+                accept: false,
+                message: "Sended!",
+            });
+
+            setError({
+                name: false,
+                email: false,
+                password: false,
+                accept: false,
+            });
+        } else {
+            setError({
+                name: !validation.name,
+                email: !validation.email,
+                password: !validation.password,
+                accept: !validation.accept,
+            });
+        }
     };
 
     return (
@@ -112,7 +183,9 @@ function App() {
                         value={user.password}
                         onChange={handleChange}
                     />
-                    {error.password && <span>{messages.password_incorect}</span>}
+                    {error.password && (
+                        <span>{messages.password_incorect}</span>
+                    )}
                 </label>
 
                 <label htmlFor="accept">
@@ -120,7 +193,7 @@ function App() {
                         type="checkbox"
                         id="accept"
                         name="accept"
-                        value={user.accept}
+                        checked={user.accept}
                         onChange={handleChange}
                     />
                     Confirm the rules
@@ -128,6 +201,7 @@ function App() {
                 </label>
 
                 <button>Zapisz</button>
+                {user.message && <h3>{user.message}</h3>}
             </FormWrapper>
         </Wrapper>
     );
