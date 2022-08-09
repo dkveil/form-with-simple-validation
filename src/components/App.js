@@ -4,15 +4,28 @@ import styled from "styled-components";
 const Wrapper = styled.div`
     display: flex;
     justify-content: center;
+    width: 320px;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: rgba(60, 66, 87, 0.12) 0px 7px 14px 0px, rgba(0, 0, 0, 0.12) 0px 3px 6px 0px;
+
+    @media screen and (min-width: 768px){
+        width: 520px;
+    }
+
 `;
 
 const FormWrapper = styled.form`
     margin: 20px auto;
+    padding-bottom: 30px;
 
     label {
+        color: rgb(84, 105, 212);
         display: block;
+        font-size: 14px;
+        font-weight: 600;
         margin-top: 16px;
-        line-height: 1.5;
+        line-height: 2;
         span {
             display: block;
             color: red;
@@ -22,6 +35,12 @@ const FormWrapper = styled.form`
 
     input {
         display: block;
+        font-size: 16px;
+        line-height: 28px;
+        padding: 6px 16px;
+        border-radius: 4px;
+        border: 1px solid lightgray;
+        outline-color: rgb(84 105 212 / 0.5);
     }
 
     input[type="checkbox"] {
@@ -34,6 +53,19 @@ const FormWrapper = styled.form`
         display: block;
         margin-top: 20px;
         padding: 10px 20px;
+        width: 100%;
+        border: none;
+        border-radius: 4px;
+        background-color: rgb(84, 105, 212);
+        box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+            rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+            rgba(0, 0, 0, 0.12) 0px 1px 1px 0px,
+            rgb(84, 105, 212) 0px 0px 0px 1px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+            rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+            rgba(60, 66, 87, 0.08) 0px 2px 5px 0px;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
     }
 `;
 
@@ -200,7 +232,7 @@ function App() {
                     {error.accept && <span>{messages.accept_incorect}</span>}
                 </label>
 
-                <button>Zapisz</button>
+                <button>Send</button>
                 {user.message && <h3>{user.message}</h3>}
             </FormWrapper>
         </Wrapper>
